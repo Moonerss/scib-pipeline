@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
+import warnings
+warnings.filterwarnings('ignore')
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 import scanpy as sc
 import scib
-import warnings
-
-warnings.filterwarnings('ignore')
 
 
 def runIntegration(inPath, outPath, method, hvg, batch, celltype=None):

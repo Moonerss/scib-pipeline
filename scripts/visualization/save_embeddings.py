@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import warnings
+
+warnings.filterwarnings('ignore')
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 import scanpy as sc
 import scib
 import argparse
 import os
 import sys
-import warnings
 
-warnings.filterwarnings('ignore')
 
 RESULT_TYPES = [
     "full",  # reconstructed expression data

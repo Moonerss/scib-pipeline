@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import warnings
+warnings.filterwarnings('ignore')
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 import scanpy as sc
 import scib
 import numpy as np
-import warnings
-
-warnings.filterwarnings('ignore')
 
 # types of integration output
 RESULT_TYPES = [

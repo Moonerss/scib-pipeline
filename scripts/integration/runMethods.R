@@ -32,7 +32,7 @@ if(opt$method=='seurat'){
 		hvg<-unlist(readRDS(opt$hvg), use.names=FALSE)
 	}
 	else {
-		hvg <- rownames(sobj@assays$RNA)
+		hvg <- rownames(sobj)
 	}
 
 	out = runSeurat(sobj, opt$b, hvg)
@@ -43,7 +43,7 @@ if(opt$method=='seuratrpca'){
 		hvg<-unlist(readRDS(opt$hvg), use.names=FALSE)
 	}
 	else {
-		hvg <- rownames(sobj@assays$RNA)
+		hvg <- rownames(sobj)
 	}
 
 	out = runSeuratRPCA(sobj, opt$b, hvg)
@@ -72,7 +72,7 @@ if(opt$method=='liger'){
 		hvg<-unlist(readRDS(opt$hvg), use.names=FALSE)
 	}
 	else {
-		hvg <- rownames(sobj@assays$RNA)
+		hvg <- rownames(sobj)
 	}
 
 	out = runLiger(sobj, opt$b, hvg)
