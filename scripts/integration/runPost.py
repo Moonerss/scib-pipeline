@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
+import warnings
+warnings.filterwarnings('ignore')
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 import scib
 import numpy as np
-import warnings
-
-warnings.filterwarnings('ignore')
-
 
 def runPost(inPath, outPath, conos):
     """
@@ -19,6 +18,10 @@ def runPost(inPath, outPath, conos):
         adata = scib.pp.read_conos(inPath)
     else:
         adata = scib.pp.read_seurat(inPath)
+
+    ## refresh the index to avoid error
+    adata.obs_names = adata.obs_names.tolist()
+    adata.var_names = adata.var_names.tolist()
 
     adata.write(outPath)
 
