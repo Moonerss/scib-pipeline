@@ -35,7 +35,6 @@ runSeurat = function(data, batch, hvg=2000) {
         	   sd.weight = 1,
         	   sample.tree = NULL,
         	   preserve.order = F,
-        	   do.cpp = T,
         	   eps = 0,
         	   verbose = T)
 	  return(integrated)
@@ -75,7 +74,6 @@ runSeuratRPCA = function(data, batch, hvg=2000) {
         	   sd.weight = 1,
         	   sample.tree = NULL,
         	   preserve.order = F,
-        	   do.cpp = T,
         	   eps = 0,
         	   verbose = T)
 	  return(integrated)
@@ -135,8 +133,8 @@ runHarm = function(sobj, batch) {
 	require(Seurat)
 
       sobj <- ScaleData(sobj)
-	sobj <- RunPCA(sobj, features=rownames(sobj@assays$RNA))
-	sobj <- RunHarmony(sobj, batch)
+	sobj <- RunPCA(sobj, features=rownames(sobj))
+	sobj <- RunHarmony(sobj, batch, assay.use = DefaultAssay(sobj))
 	sobj[['X_emb']] <- sobj[['harmony']]
 
       return(sobj)
@@ -164,6 +162,7 @@ runLiger = function(sobj, batch, hvg, k = 20, res = 0.4, small.clust.thresh = 20
   lobj = seuratToLiger(
     sobj,
     combined.seurat = T,
+	raw.assay = DefaultAssay(sobj),
     meta.var = batch,
     renormalize = F,
     remove.missing = F
@@ -184,11 +183,19 @@ runLiger = function(sobj, batch, hvg, k = 20, res = 0.4, small.clust.thresh = 20
 
   # Store embedding in initial Seurat object
   # Code taken from ligerToSeurat() function from LIGER
-  inmf.obj <- new(
-    Class = "DimReduc", feature.loadings = t(lobj@W),
-    cell.embeddings = lobj@H.norm, key = "X_emb"
-  )
-  sobj@reductions['X_emb'] <- inmf.obj
+  # inmf.obj <- new(
+  #   Class = "DimReduc", feature.loadings = t(lobj@W),
+  #   cell.embeddings = lobj@H.norm, key = "X_emb"
+  # )
+
+  inmf.obj1 <- CreateDimReducObject(
+       embeddings = lobj@H.norm,
+       loadings = t(lobj@W),
+       assay = DefaultAssay(sobj),
+       key = 'X_emb'
+     )
+  # sobj@reductions['X_emb'] <- inmf.obj1
+  sobj[['X_emb']] <- inmf.obj1
 
   return(sobj)
 }
