@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import warnings
+warnings.filterwarnings('ignore')
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 import scanpy as sc
 import scib
-import warnings
-
-warnings.filterwarnings('ignore')
 
 
 def runPP(inPath, outPath, hvg, batch, rout, scale, seurat):
@@ -19,7 +20,7 @@ def runPP(inPath, outPath, hvg, batch, rout, scale, seurat):
         seurat: set to true to produce hvg list
     """
 
-    adata = sc.read(inPath)
+    adata = sc.read_h5ad(inPath)
     hvgs = adata.var.index
 
     # remove HVG if already precomputed
@@ -48,7 +49,7 @@ def runPP(inPath, outPath, hvg, batch, rout, scale, seurat):
 
     if rout:
         print("Save as RDS")
-        scib.preprocessing.saveSeurat(adata, outPath, batch, hvgs)
+        scib.preprocessing.save_seurat(adata, outPath, batch, hvgs)
 
     else:
         print("Save as HDF5")
